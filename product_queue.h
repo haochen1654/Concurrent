@@ -1,5 +1,7 @@
 
+#include <condition_variable>
 #include <memory>
+#include <mutex>
 #include <queue>
 
 class ProductQueue {
@@ -19,5 +21,6 @@ class ProductQueue {
 
  private:
   std::unique_ptr<std::queue<int>> queue_;
+  std::condition_variable cond_var_;
   const int limit_;
 };

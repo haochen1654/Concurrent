@@ -36,3 +36,8 @@ add_executable (
     Task
     "task_main.cpp" 
 )
+
+add_executable (
+    Mutex
+    "mutex_main.cpp" 
+)
