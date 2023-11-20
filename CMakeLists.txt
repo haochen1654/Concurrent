@@ -26,3 +26,8 @@ add_executable (
     Thread
     "thread_main.cpp" 
 )
+
+add_executable (
+    Task
+    "task_main.cpp" 
+)
