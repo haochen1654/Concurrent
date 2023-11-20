@@ -20,6 +20,11 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
+add_library(
+  ProductQueue
+  "product_queue.h" 
+  "product_queue.cpp" 
+)
 
 # Add source to this project's executable.
 add_executable (
