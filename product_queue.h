@@ -22,5 +22,6 @@ class ProductQueue {
  private:
   std::unique_ptr<std::queue<int>> queue_;
   std::condition_variable cond_var_;
+  std::mutex mutex_;
   const int limit_;
 };

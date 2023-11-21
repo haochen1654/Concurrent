@@ -41,3 +41,13 @@ add_executable (
     Mutex
     "mutex_main.cpp" 
 )
+
+add_executable (
+    ConditionVariable
+    "condition_variable_main.cpp" 
+)
+
+add_executable (
+    ProducerConsumer
+    "producer_consumer_main.cpp" 
+)
