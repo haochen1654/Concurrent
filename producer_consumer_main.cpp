@@ -7,7 +7,7 @@
 
 using namespace std;
 
-std::mutex m;
+std::mutex m1;
 std::condition_variable cv;
 bool isEmpty = true;
 
@@ -16,22 +16,25 @@ int main() {
   bool done = false;
 
   queue<int> goods;
+  int i = 0;
 
   thread producer([&]() {
-    for (int i = 0; i < 100; ++i) {
-      if (goods.size() < 10) {
+    while (i < 99) {
+      {
         {
-          std::unique_lock<std::mutex> lk(m);
+          std::unique_lock<std::mutex> lk(m1);
           cv.wait(lk, [] { return isEmpty; });
-          goods.push(i);
-          c++;
-          std::cout << "Push " << i << " to the queue.\n";
+          while (goods.size() < 10) {
+            goods.push(i);
+            c++;
+            std::cout << "Push " << i << " to the queue.\n";
+            ++i;
+          }
         }
-        continue;
-      } else {
         {
-          std::unique_lock<std::mutex> lk(m);
+          std::lock_guard<std::mutex> lk(m1);
           isEmpty = false;
+          std::cout << "Queue is Full.\n";
         }
         cv.notify_all();
       }
@@ -42,14 +45,19 @@ int main() {
   thread consumer([&]() {
     while (!done) {
       {
-        std::lock_guard<std::mutex> lk(m);
+        std::unique_lock<std::mutex> lk(m1);
+        cv.wait(lk, [] { return !isEmpty; });
         while (!goods.empty()) {
           int i = goods.front();
           goods.pop();
           c--;
           std::cout << "Pop " << i << " out of the queue.\n";
         }
+      }
+      {
+        std::lock_guard<std::mutex> lk(m1);
         isEmpty = true;
+        std::cout << "Queue is Empty.\n";
       }
       cv.notify_all();
     }
