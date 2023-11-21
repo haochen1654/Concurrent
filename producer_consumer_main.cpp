@@ -17,6 +17,7 @@ int main() {
 
   queue<int> goods;
   int i = 0;
+  int i = 0;
 
   thread producer([&]() {
     while (i < 99) {
@@ -30,9 +31,15 @@ int main() {
             std::cout << "Push " << i << " to the queue.\n";
             ++i;
           }
+          while (goods.size() < 10) {
+            goods.push(i);
+            c++;
+            std::cout << "Push " << i << " to the queue.\n";
+            ++i;
+          }
         }
         {
-          std::lock_guard<std::mutex> lk(m1);
+          std::lock_guard<std::mutex> lk(m);
           isEmpty = false;
           std::cout << "Queue is Full.\n";
         }
@@ -45,7 +52,7 @@ int main() {
   thread consumer([&]() {
     while (!done) {
       {
-        std::unique_lock<std::mutex> lk(m1);
+        std::unique_lock<std::mutex> lk(m);
         cv.wait(lk, [] { return !isEmpty; });
         while (!goods.empty()) {
           int i = goods.front();
@@ -55,8 +62,9 @@ int main() {
         }
       }
       {
-        std::lock_guard<std::mutex> lk(m1);
+        std::lock_guard<std::mutex> lk(m);
         isEmpty = true;
+        std::cout << "Queue is Empty.\n";
         std::cout << "Queue is Empty.\n";
       }
       cv.notify_all();
