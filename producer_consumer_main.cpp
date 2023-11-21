@@ -19,17 +19,21 @@ int main() {
 
   thread producer([&]() {
     for (int i = 0; i < 100; ++i) {
-      {
+      if (goods.size() < 10) {
         std::unique_lock<std::mutex> lk(m);
         cv.wait(lk, [] { return isEmpty; });
         goods.push(i);
         c++;
         std::cout << "Push " << i << " to the queue.\n";
+
+        continue;
+      }
+      {
+        std::unique_lock<std::mutex> lk(m);
         isEmpty = false;
       }
       cv.notify_all();
     }
-
     done = true;
   });
 
