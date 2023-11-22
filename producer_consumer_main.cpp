@@ -30,12 +30,6 @@ int main() {
             std::cout << "Push " << i << " to the queue.\n";
             ++i;
           }
-          while (goods.size() < 10) {
-            goods.push(i);
-            c++;
-            std::cout << "Push " << i << " to the queue.\n";
-            ++i;
-          }
         }
         {
           std::lock_guard<std::mutex> lk(m);
