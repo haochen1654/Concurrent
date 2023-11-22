@@ -7,7 +7,7 @@
 
 using namespace std;
 
-std::mutex m1;
+std::mutex m;
 std::condition_variable cv;
 bool isEmpty = true;
 
@@ -17,13 +17,12 @@ int main() {
 
   queue<int> goods;
   int i = 0;
-  int i = 0;
 
   thread producer([&]() {
     while (i < 99) {
       {
         {
-          std::unique_lock<std::mutex> lk(m1);
+          std::unique_lock<std::mutex> lk(m);
           cv.wait(lk, [] { return isEmpty; });
           while (goods.size() < 10) {
             goods.push(i);
@@ -64,7 +63,6 @@ int main() {
       {
         std::lock_guard<std::mutex> lk(m);
         isEmpty = true;
-        std::cout << "Queue is Empty.\n";
         std::cout << "Queue is Empty.\n";
       }
       cv.notify_all();
