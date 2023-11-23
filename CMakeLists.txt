@@ -51,3 +51,10 @@ add_executable (
     ProducerConsumer
     "producer_consumer_main.cpp" 
 )
+
+add_executable (
+    ProductQueueMain
+    "product_queue_main.cpp" 
+)
+
+target_link_libraries(ProductQueueMain ProductQueue)

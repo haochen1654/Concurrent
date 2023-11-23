@@ -1,3 +1,5 @@
+#ifndef _CONCURRENT_PRODUCTQUEUE_
+#define _CONCURRENT_PRODUCTQUEUE_
 
 #include <condition_variable>
 #include <memory>
@@ -18,6 +20,7 @@ class ProductQueue {
   ProductQueue(ProductQueue&& product_queue) = delete;
   ProductQueue& operator=(ProductQueue&& product_queue) = delete;
   void push_back(int number);
+  void pop();
 
  private:
   std::unique_ptr<std::queue<int>> queue_;
@@ -25,3 +28,5 @@ class ProductQueue {
   std::mutex mutex_;
   const int limit_;
 };
+
+#endif
