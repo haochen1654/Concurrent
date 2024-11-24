@@ -1,5 +1,6 @@
 #include <iostream>
 #include <thread>
+
 #include "product_queue.h"
 
 void producer(const int number, ProductQueue* product_queue) {

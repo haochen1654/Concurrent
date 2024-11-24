@@ -1,4 +1,5 @@
 #include "product_queue.h"
+
 #include <iostream>
 
 void ProductQueue::push_back(const int number) {
